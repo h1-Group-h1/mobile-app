@@ -1,5 +1,5 @@
 package com.example.mainapp;
-//hello world
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
