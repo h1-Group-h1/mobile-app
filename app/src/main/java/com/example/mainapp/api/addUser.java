@@ -6,6 +6,12 @@ public class addUser {
     private String email;
     private String hashed_password;
 
+    public addUser(String name ,String email, String hashed_password){
+        this.name = name;
+        this.email = email;
+        this.hashed_password = hashed_password;
+    }
+
     //getters and setters
 
     public String getName(){return name;}
