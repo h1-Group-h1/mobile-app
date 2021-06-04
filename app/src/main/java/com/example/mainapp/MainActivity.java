@@ -1,10 +1,15 @@
 package com.example.mainapp;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
+import com.example.mainapp.api.UserApiResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -18,42 +23,48 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mainapp.databinding.ActivityMainBinding;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    UserApiResponse user;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //this is just for testing need to remove this later
-        Controller.doApi();
+        Intent intent = getIntent();
+
+        user = IntentSerialiser.getUserFromIntent(intent);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        //floating action button
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_contacts, R.id.nav_loginlogout)
+                R.id.nav_devices, R.id.nav_schedule, R.id.nav_rules)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView nameText = (TextView) headerView.findViewById(R.id.header_name);
+        TextView emailText = (TextView) headerView.findViewById(R.id.header_email);
+        nameText.setText(user.getName());
+        emailText.setText(user.getEmail());
     }
 
     @Override
