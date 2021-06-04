@@ -30,9 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
-    UserApiResponse user;
-
-
+    public static UserApiResponse user;
+    public static int house_id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

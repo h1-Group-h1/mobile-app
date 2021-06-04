@@ -1,19 +1,20 @@
 package com.example.mainapp;
 
-import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.example.mainapp.api.DeviceAction;
+import com.example.mainapp.api.DeviceAdd;
+import com.example.mainapp.api.DeviceResponse;
+import com.example.mainapp.api.DeviceService;
+import com.example.mainapp.api.StatusResponse;
 import com.example.mainapp.api.UserApiResponse;
 import com.example.mainapp.api.addUser;
-import com.example.mainapp.api.userService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.mainapp.api.UserService;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.Credentials;
@@ -26,14 +27,31 @@ public class Controller {
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClientBuilder.build())
             .build();
-    private static final userService service = retrofit.create(userService.class);
+    private static final UserService userService = retrofit.create(UserService.class);
+    private static final DeviceService deviceService = retrofit.create(DeviceService.class);
 
     public static Call<UserApiResponse> AddUser(String name, String email, String hashed_password) {
-        return service.addUser(new addUser(name, email, hashed_password));
+        return userService.addUser(new addUser(name, email, hashed_password));
     }
 
     public static Call<UserApiResponse> getUser(String email, String username, String password) {
-        return service.getUser(Credentials.basic(username, password), email);
+        return userService.getUser(Credentials.basic(username, password), email);
+    }
+
+    public static Call<DeviceResponse> addDevice(int house_id, DeviceAdd device, String username, String password) {
+        return deviceService.addDevice(Credentials.basic(username, password), house_id, device);
+    }
+
+    public static Call<StatusResponse> delDevice(int device_id, String username, String password) {
+        return deviceService.delDevice(Credentials.basic(username, password), device_id);
+    }
+
+    public static Call<StatusResponse> operateDevice(DeviceAction action, String username, String password) {
+        return deviceService.operateDevice(Credentials.basic(username, password), action);
+    }
+
+    public static Call<List<DeviceResponse>> getDevices(int house_id, String username, String password) {
+        return deviceService.getDevices(Credentials.basic(username, password), house_id);
     }
 
     /*public static void doApi(){

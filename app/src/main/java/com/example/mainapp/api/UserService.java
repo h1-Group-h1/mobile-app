@@ -8,7 +8,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface userService {
+public interface UserService {
 
     // the interface for the api
 
