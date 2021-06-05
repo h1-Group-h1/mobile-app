@@ -30,6 +30,11 @@ android {
         viewBinding true
     }
 }
+repositories {
+    maven {
+        url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
+    }
+}
 
 dependencies {
 
@@ -41,9 +46,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation files('libs\\org.eclipse.paho.android.service-1.1.1.jar')
-    implementation files('libs\\org.eclipse.paho.client.mqttv3-1.1.1.jar')
-    implementation files('libs\\org.eclipse.paho.android.service-1.1.1.jar')
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     //implementation files('libs\\retrofit-2.9.0.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

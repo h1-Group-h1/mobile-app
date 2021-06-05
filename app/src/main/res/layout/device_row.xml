@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:gravity="center">
+    android:paddingBottom="10dp">
 
     <TextView
+        android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/name_text"/>
+        android:text="Sample header"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
     <TextView
+        android:id="@+id/status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/status_text"/>
+        android:text="Sample status"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
     <Button
+        android:id="@+id/operate_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/operate_button"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

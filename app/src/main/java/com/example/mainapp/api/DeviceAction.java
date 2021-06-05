@@ -1,6 +1,11 @@
 package com.example.mainapp.api;
 
 public class DeviceAction {
+    public DeviceAction(int serial_number, int val) {
+        this.serial_number = serial_number;
+        this.value = val;
+    }
+
     public int getSerial_number() {
         return serial_number;
     }
