@@ -97,6 +97,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         this.notifyItemInserted(devices.size()-1);
     }
 
+    public void noDevices(View v){
+        TextView devicesText = v.findViewById(R.id.devicesText);
+        devicesText.setText("No devices are attributed to your account.");
+    }
+
     public void setDeviceStatus(int serial_number, int newState) {
         int ind = 0;
         for (DeviceInfo device : devices) {
