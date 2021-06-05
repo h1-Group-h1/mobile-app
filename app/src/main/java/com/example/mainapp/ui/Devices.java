@@ -29,6 +29,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -51,7 +52,7 @@ public class Devices extends Fragment {
     private DeviceAdapter adapter;
 
     MqttAndroidClient mqttAndroidClient;
-    final String serverUri = "tcp://test.mosquitto.org:1883";
+    final String serverUri = "tcp://broker.hivemq.com:1883";
     final String clientId = "RA_CLIENT_" + Integer.toString(MainActivity.user.getId());
 
     // TODO: Rename and change types of parameters
@@ -137,8 +138,14 @@ public class Devices extends Fragment {
         mqttAndroidClient = new MqttAndroidClient(getContext(), serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
-            public void connectComplete(boolean b, String s) {
-
+            public void connectComplete(boolean reconnect, String s) {
+                if (reconnect) {
+                    Log.d("Devices", "Reconnect true");
+                    for (String sn : topics) {
+                        subscribeToTopic("status/" + sn);
+                        Log.d("Devices", "Subscribing to " + "status/" + sn);
+                    }
+                }
             }
 
             @Override
@@ -148,6 +155,7 @@ public class Devices extends Fragment {
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.d("Devices", "Received " + new String(mqttMessage.getPayload()));
                 String[] parts = topic.split("/");
                 int serial = Integer.parseInt(parts[parts.length-1]);
                 int status = Integer.parseInt(new String(mqttMessage.getPayload()));
@@ -175,6 +183,7 @@ public class Devices extends Fragment {
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                     for (String sn : topics) {
                         subscribeToTopic("status/" + sn);
+                        Log.d("Devices", "Subscribing to " + "status/" + sn);
                     }
                 }
 
