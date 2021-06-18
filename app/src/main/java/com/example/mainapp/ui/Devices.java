@@ -116,15 +116,21 @@ public class Devices extends Fragment {
             @Override
             public void onResponse(Call<List<DeviceResponse>> call, Response<List<DeviceResponse>> response) {
                 if (response.code() == 200) {
-                    for (DeviceResponse device : response.body()) {
-                        Log.d("DevicesBlank", device.getName());
-                        AddDevice(new DeviceInfo(device.getName(),
-                                                 device.getSerial_number(),
-                                                 100,
-                                                 device.getType(),
-                                                 device.getId(),
-                                                 device.getHouse_id()));
-                        topics.add(Integer.toString(device.getSerial_number()));
+                    Log.d("DevicesBlank", String.valueOf(response.body().size()));
+                    if (response.body().size() > 0) {
+                        for (DeviceResponse device : response.body()) {
+                            Log.d("DevicesBlank", device.getName());
+                            AddDevice(new DeviceInfo(device.getName(),
+                                    device.getSerial_number(),
+                                    100,
+                                    device.getType(),
+                                    device.getId(),
+                                    device.getHouse_id()));
+                            topics.add(Integer.toString(device.getSerial_number()));
+                        }
+                    }else{
+                        //there are no devices in this house; tell this to the user
+                        ShowNoDevices();
                     }
                 }
             }
@@ -143,7 +149,6 @@ public class Devices extends Fragment {
                     Log.d("Devices", "Reconnect true");
                     for (String sn : topics) {
                         subscribeToTopic("status/" + sn);
-                        Log.d("Devices", "Subscribing to " + "status/" + sn);
                     }
                 }
             }
@@ -160,6 +165,7 @@ public class Devices extends Fragment {
                 int serial = Integer.parseInt(parts[parts.length-1]);
                 int status = Integer.parseInt(new String(mqttMessage.getPayload()));
                 UpdateStatus(serial, status);
+                Log.d("Status", "status of window changed: "+ status);
             }
 
             @Override
@@ -183,7 +189,6 @@ public class Devices extends Fragment {
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                     for (String sn : topics) {
                         subscribeToTopic("status/" + sn);
-                        Log.d("Devices", "Subscribing to " + "status/" + sn);
                     }
                 }
 
@@ -222,6 +227,10 @@ public class Devices extends Fragment {
 
     private void AddDevice(DeviceInfo device) {
         adapter.add(device);
+    }
+
+    private void ShowNoDevices(){
+        adapter.noDevices(getView());
     }
 
     private void UpdateStatus(int serial, int status) {
