@@ -1,8 +1,11 @@
-package com.example.mainapp.ui;
+package com.example.mainapp.ui.devices;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.mainapp.Controller;
 import com.example.mainapp.DeviceAdapter;
@@ -17,6 +21,8 @@ import com.example.mainapp.DeviceInfo;
 import com.example.mainapp.MainActivity;
 import com.example.mainapp.R;
 import com.example.mainapp.api.DeviceResponse;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -29,7 +35,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,13 +60,15 @@ public class Devices extends Fragment {
     final String serverUri = "tcp://broker.hivemq.com:1883";
     final String clientId = "RA_CLIENT_" + Integer.toString(MainActivity.user.getId());
 
+    FloatingActionButton menuActionButton;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public Devices() {
         // Required empty public constructor
-        super(R.layout.fragment_devices_blank);
+        super(R.layout.devices_fragment);
     }
 
     /**
@@ -89,10 +96,6 @@ public class Devices extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
-
     }
 
     @Override
@@ -102,11 +105,17 @@ public class Devices extends Fragment {
         Call<List<DeviceResponse>> call = Controller.getDevices(MainActivity.house_id, MainActivity.user
                 .getEmail(), MainActivity.user.getHashed_password());
         Log.d("Devices", "Created view");
-        View view = inflater.inflate(R.layout.fragment_devices_blank, container, false);
+        View view = inflater.inflate(R.layout.devices_fragment, container, false);
         layout = (RecyclerView) view.findViewById(R.id.mainDevicesLayout);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(container.getContext());
         layout.setLayoutManager(manager);
 
+        menuActionButton = (FloatingActionButton) view.findViewById(R.id.devicesActionButton);
+        menuActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
 
         adapter = new DeviceAdapter(new ArrayList<DeviceInfo>());

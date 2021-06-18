@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_rules"
-        android:name="com.example.mainapp.ui.rules.RulesFragment"
+        android:name="com.example.mainapp.ui.rules.Rules"
         android:label="@string/rules_fragment"
         tools:layout="@layout/rules_fragment"/>
     <fragment
@@ -17,7 +17,7 @@
         tools:layout="@layout/schedule_fragment" />
     <fragment
         android:id="@+id/nav_devices"
-        android:name="com.example.mainapp.ui.Devices"
+        android:name="com.example.mainapp.ui.devices.Devices"
         android:label="@string/hello_blank_fragment"
-        tools:layout="@layout/fragment_devices_blank"/>
+        tools:layout="@layout/devices_fragment"/>
 </navigation>

@@ -38,8 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
         String name = ((EditText) findViewById(R.id.editTextTextPersonName)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
-        Log.d("Register", name + " " + email + " " + password);
-        Call<UserApiResponse> call = Controller.AddUser(name, email, password);
+        String hashed_password = PasswordHasher.hash_password(password);
+        Log.d("Register", name + " " + email + " " + hashed_password);
+        Call<UserApiResponse> call = Controller.AddUser(name, email, hashed_password);
         call.enqueue(new Callback<UserApiResponse>() {
             @Override
             public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
@@ -47,6 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     intent = IntentSerialiser.addUserToIntent(intent, response.body());
                     startActivity(intent);
+                } else {
+                    Snackbar.make(view, "Unable to add user", Snackbar.LENGTH_LONG).show();
                 }
                 Log.d("Register", "Result code: " + Integer.toString(response.code()));
             }

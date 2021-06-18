@@ -1,4 +1,4 @@
-package com.example.mainapp.ui.schedule;
+package com.example.mainapp.ui.rules;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -36,10 +36,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Schedule#newInstance} factory method to
+ * Use the {@link Rules#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Schedule extends Fragment {
+public class Rules extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,7 +57,7 @@ public class Schedule extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Schedule() {
+    public Rules() {
         // Required empty public constructor
         super(R.layout.devices_fragment);
     }
@@ -71,8 +71,8 @@ public class Schedule extends Fragment {
      * @return A new instance of fragment DevicesBlank.
      */
     // TODO: Rename and change types and number of parameters
-    public static Schedule newInstance(String param1, String param2) {
-        Schedule fragment = new Schedule();
+    public static Rules newInstance(String param1, String param2) {
+        Rules fragment = new Rules();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,10 +97,7 @@ public class Schedule extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Call<List<DeviceResponse>> call = Controller.getDevices(MainActivity.house_id, MainActivity.user
-                .getEmail(), MainActivity.user.getHashed_password());
-        Log.d("Devices", "Created view");
-        View view = inflater.inflate(R.layout.schedule_fragment, container, false);
+        View view = inflater.inflate(R.layout.rules_fragment, container, false);
         layout = (RecyclerView) view.findViewById(R.id.mainDevicesLayout);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(container.getContext());
         layout.setLayoutManager(manager);
@@ -110,45 +107,11 @@ public class Schedule extends Fragment {
         adapter = new DeviceAdapter(new ArrayList<DeviceInfo>());
         layout.setAdapter(adapter);
         ArrayList<String> topics = new ArrayList<String>();
-        call.enqueue(new Callback<List<DeviceResponse>>() {
-            @Override
-            public void onResponse(Call<List<DeviceResponse>> call, Response<List<DeviceResponse>> response) {
-                if (response.code() == 200) {
-                    Log.d("DevicesBlank", String.valueOf(response.body().size()));
-                    if (response.body().size() > 0) {
-                        for (DeviceResponse device : response.body()) {
-                            Log.d("DevicesBlank", device.getName());
-                            AddDevice(new DeviceInfo(device.getName(),
-                                    device.getSerial_number(),
-                                    100,
-                                    device.getType(),
-                                    device.getId(),
-                                    device.getHouse_id()));
-                            topics.add(Integer.toString(device.getSerial_number()));
-                        }
-                    }else{
-                        //there are no devices in this house; tell this to the user
-                        ShowNoDevices();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DeviceResponse>> call, Throwable t) {
-
-            }
-        });
 
         mqttAndroidClient = new MqttAndroidClient(getContext(), serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String s) {
-                if (reconnect) {
-                    Log.d("Devices", "Reconnect true");
-                    for (String sn : topics) {
-                        subscribeToTopic("status/" + sn);
-                    }
-                }
             }
 
             @Override
@@ -158,12 +121,6 @@ public class Schedule extends Fragment {
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.d("Devices", "Received " + new String(mqttMessage.getPayload()));
-                String[] parts = topic.split("/");
-                int serial = Integer.parseInt(parts[parts.length-1]);
-                int status = Integer.parseInt(new String(mqttMessage.getPayload()));
-                UpdateStatus(serial, status);
-                Log.d("Status", "status of window changed: "+ status);
             }
 
             @Override
@@ -221,17 +178,5 @@ public class Schedule extends Fragment {
             System.err.println("Exception while subscribing");
             ex.printStackTrace();
         }
-    }
-
-    private void AddDevice(DeviceInfo device) {
-        adapter.add(device);
-    }
-
-    private void ShowNoDevices(){
-        adapter.noDevices(getView());
-    }
-
-    private void UpdateStatus(int serial, int status) {
-        adapter.setDeviceStatus(serial, status);
     }
 }

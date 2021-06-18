@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     public static UserApiResponse user;
     public static int house_id = 1;
 
+    public static String USER_PREF = "username";
+    public static String PASS_PREF = "password";
+    public static String PREF_NAME = "com.ra.mainapp.prefs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         user = IntentSerialiser.getUserFromIntent(intent);
+
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, Activity.MODE_PRIVATE);
+        preferences.edit().putString(USER_PREF, user.getEmail());
+        preferences.edit().putString(PASS_PREF, user.getHashed_password());
+        preferences.edit().apply();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

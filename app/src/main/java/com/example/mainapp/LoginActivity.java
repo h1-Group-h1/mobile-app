@@ -31,18 +31,18 @@ import okhttp3.Credentials;
 
 
 public class LoginActivity extends AppCompatActivity {
-
+    // TODO: Hash the password
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SharedPreferences preferences = getSharedPreferences("RA_MAINAPP", Activity.MODE_PRIVATE);
-        String username = preferences.getString("username", "");
-        String password = preferences.getString("password", "");
+        SharedPreferences preferences = getSharedPreferences(MainActivity.PREF_NAME, Activity.MODE_PRIVATE);
+        String username = preferences.getString(MainActivity.USER_PREF, "");
+        String hashed_password = preferences.getString(MainActivity.PASS_PREF, "");
         if (username != "") {
-            Call<UserApiResponse> call = Controller.getUser(username, username, password);
+            Call<UserApiResponse> call = Controller.getUser(username, username, hashed_password);
             call.enqueue(new Callback<UserApiResponse>() {
                 @Override
                 public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
@@ -64,8 +64,9 @@ public class LoginActivity extends AppCompatActivity {
     public void OnLoginClicked(View view) {
         EditText username = (EditText) findViewById(R.id.usernameText);
         EditText password = (EditText) findViewById(R.id.passwordText);
+        String hashed_password = PasswordHasher.hash_password(password.getText().toString());
 
-        Call<UserApiResponse> call = Controller.getUser(username.getText().toString(), username.getText().toString(), password.getText().toString());
+        Call<UserApiResponse> call = Controller.getUser(username.getText().toString(), username.getText().toString(),hashed_password);
         call.enqueue(new Callback<UserApiResponse>() {
             @Override
             public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
