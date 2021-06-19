@@ -38,9 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
         String name = ((EditText) findViewById(R.id.editTextTextPersonName)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
-        String hashed_password = PasswordHasher.hash_password(password);
-        Log.d("Register", name + " " + email + " " + hashed_password);
-        Call<UserApiResponse> call = Controller.AddUser(name, email, hashed_password);
+        Log.d("Register", name + " " + email + " " + password);
+        Call<UserApiResponse> call = Controller.AddUser(name, email, password);
         call.enqueue(new Callback<UserApiResponse>() {
             @Override
             public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {

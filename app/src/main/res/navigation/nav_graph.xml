@@ -3,26 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/devices_fragment">
 
+    <!-- IGNORE!! -->
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.mainapp.ui.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/devices_fragment"
+        android:name="com.example.mainapp.ui.devices.Devices"
+        android:label="Devices fragment"
+        tools:layout="@layout/devices_fragment">
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_DevicesFragment_to_DevicesAddFragment"
+            app:destination="@+id/add_devices_fragment"/>
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.mainapp.ui.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+    <fragment
+        android:id="@+id/add_devices_fragment"
+        android:name="com.example.mainapp.ui.devices.AddDevice"
+        android:label="Add device fragment"
+        tools:layout="@layout/fragment_add_device">
+
     </fragment>
 </navigation>

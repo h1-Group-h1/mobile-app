@@ -3,21 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_devices">
+    app:startDestination="@+id/devices_fragment">
 
     <fragment
-        android:id="@+id/nav_rules"
+        android:id="@+id/rules_fragment"
         android:name="com.example.mainapp.ui.rules.Rules"
         android:label="@string/rules_fragment"
-        tools:layout="@layout/rules_fragment"/>
+        tools:layout="@layout/rules_fragment">
+
+        <action
+            android:id="@+id/action_rules_fragment_to_add_rules_fragment"
+            app:destination="@id/add_rules_fragment" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_schedule"
+        android:id="@+id/schedule_fragment"
         android:name="com.example.mainapp.ui.schedule.Schedule"
         android:label="@string/schedule_fragment"
-        tools:layout="@layout/schedule_fragment" />
+        tools:layout="@layout/schedule_fragment" >
+
+        <action
+            android:id="@+id/action_schedule_fragment_to_add_schedule_fragment"
+            app:destination="@id/add_schedule_fragment" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_devices"
+        android:id="@+id/devices_fragment"
         android:name="com.example.mainapp.ui.devices.Devices"
         android:label="@string/hello_blank_fragment"
-        tools:layout="@layout/devices_fragment"/>
+        tools:layout="@layout/devices_fragment">
+        <action
+            android:id="@+id/action_DevicesFragment_to_DevicesAddFragment"
+            app:destination="@+id/add_devices_fragment"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/add_devices_fragment"
+        android:name="com.example.mainapp.ui.devices.AddDevice"
+        android:label="Add device fragment"
+        tools:layout="@layout/fragment_add_device">
+        <action
+            android:id="@+id/action_DevicesAddFragment_to_DevicesFragment"
+            app:destination="@id/devices_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_rules_fragment"
+        android:name="com.example.mainapp.ui.rules.AddRuleFragment"
+        android:label="Add Rule Fragment"
+        tools:layout="@layout/fragment_add_rule">
+
+        <action
+            android:id="@+id/action_add_rules_fragment_to_rules_fragment"
+            app:destination="@id/rules_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_schedule_fragment"
+        android:name="com.example.mainapp.ui.schedule.AddScheduleFragment"
+        android:label="Add Schedule Fragment"
+        tools:layout="@layout/fragment_add_schedule">
+
+        <action
+            android:id="@+id/action_add_schedule_fragment_to_schedule_fragment"
+            app:destination="@id/schedule_fragment" />
+    </fragment>
 </navigation>

@@ -3,9 +3,13 @@ package com.example.mainapp.ui.devices;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +37,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +119,8 @@ public class Devices extends Fragment {
         menuActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Navigation.findNavController(v).navigate(R.id.action_DevicesFragment_to_DevicesAddFragment);
             }
         });
 

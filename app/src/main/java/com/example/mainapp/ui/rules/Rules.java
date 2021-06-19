@@ -47,7 +47,7 @@ public class Rules extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     RecyclerView layout;
-    private DeviceAdapter adapter;
+    // private DeviceAdapter adapter;
 
     MqttAndroidClient mqttAndroidClient;
     final String serverUri = "tcp://broker.hivemq.com:1883";
@@ -98,12 +98,11 @@ public class Rules extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.rules_fragment, container, false);
-        layout = (RecyclerView) view.findViewById(R.id.mainDevicesLayout);
+        layout = (RecyclerView) view.findViewById(R.id.mainRulesLayout);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(container.getContext());
         layout.setLayoutManager(manager);
 
-
-
+        /*
         adapter = new DeviceAdapter(new ArrayList<DeviceInfo>());
         layout.setAdapter(adapter);
         ArrayList<String> topics = new ArrayList<String>();
@@ -156,7 +155,7 @@ public class Rules extends Fragment {
             ex.printStackTrace();
             Log.d(this.getClass().getCanonicalName(), ex.getMessage());
         }
-
+*/
 
         return view;
     }

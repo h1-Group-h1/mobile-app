@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -64,9 +65,9 @@ public class LoginActivity extends AppCompatActivity {
     public void OnLoginClicked(View view) {
         EditText username = (EditText) findViewById(R.id.usernameText);
         EditText password = (EditText) findViewById(R.id.passwordText);
-        String hashed_password = PasswordHasher.hash_password(password.getText().toString());
 
-        Call<UserApiResponse> call = Controller.getUser(username.getText().toString(), username.getText().toString(),hashed_password);
+        Call<UserApiResponse> call = Controller.getUser(username.getText().toString(),
+                username.getText().toString(),password.getText().toString());
         call.enqueue(new Callback<UserApiResponse>() {
             @Override
             public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Snackbar.make(view, "Unable to login", Snackbar.LENGTH_LONG).show();
                 }
+                Log.d("android", "Response code " + Integer.toString(response.code()));
             }
 
             @Override
